@@ -1,0 +1,16 @@
+label {
+    display: block; /* Display labels as blocks */
+    margin-bottom: 5px; /* Add some space between labels */
+}
+
+input,
+select {
+    width: 100%; /* Make input fields and select element fill the container width */
+    margin-bottom: 10px; /* Add space between input fields */
+}
+
+button {
+    display: block; /* Display buttons as blocks */
+    width: 100%; /* Make buttons fill the container width */
+    margin-top: 10px; /* Add space above buttons */
+}

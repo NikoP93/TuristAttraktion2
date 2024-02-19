@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{main.css}" rel="stylesheet">
+    <title>Tags</title>
+</head>
+<body>
+<table>
+    <tbody>
+    <tr th:each="tag: ${tags}">
+        <td th:text="${tag}"></td>
+    </tr>
+    </tbody>
+</table>
+ <a th:href="@{/attractions}"> <button> Tilbage </button></a>
+</body>
+</html>
