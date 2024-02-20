@@ -1,25 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{add.css}" rel="stylesheet">
-
-    <title>Tilføj Touristattraktion</title>
+    <title>Title</title>
 </head>
 <body>
-<h1> Tilføj touristattraktion</h1>
-<form th:action="@{/attractions/save}" method="post" th:object="${touristAttraction}">
-    <label for="name">Navn: </label>
-    <input id="name" type="text" th:field="*{name}">
-    <label for="beskrivelse">Beskrivelse: </label>
-    <input id="beskrivelse" type="text" th:field="*{description}">
+<form th:action="@{/attractions/update}" method="post" th:object="${editedTouristAttraction}">
+    <label for="name"> Navn: </label>
+    <input id="name" type="text" th:field="*{name}" readonly> <br>
+    <label for="beskrivelse"> Beskrivelse: </label>
+    <input id="beskrivelse" type="text" th:field="*{description}"> <br>
     <label for="by">By:</label>
     <select id="by" name="by" th:field="*{by}">
         <option th:each="c : ${cityList}"
                 th:value="${c}"
                 th:text="${c}">
         </option>
-    </select>
+    </select> <br>
 
     <label>Tags:</label>
     <div th:each="tag : ${tagsList}">
@@ -27,10 +24,12 @@
                th:field="*{tagList}"
                th:value="${tag}" >
         <label th:text="${tag}"></label>
-    </div>
+    </div> <br>
     <button type="submit">Ok</button>
 </form>
+
 <a th:href="@{/attractions}"> <button> Fortryd </button></a>
+
 
 </body>
 </html>

@@ -50,4 +50,8 @@ public class TouristAttraction {
     public void setBy(String by) {
         this.by = by;
     }
+
+    public void setTagList(List tagList){
+        this.tagList = tagList;
+    }
 }

@@ -53,6 +53,10 @@ public class TouristController {
     public String editAttraction(@PathVariable String name, Model model){
     TouristAttraction editedAttraction = touristServices.getTouristAttraction(name);
     model.addAttribute("editedTouristAttraction", editedAttraction);
+    List<String> cityList = touristServices.getCities();
+    model.addAttribute("cityList",cityList);
+    List<String> tagsList = touristServices.getTags();
+    model.addAttribute("tagsList",tagsList);
     return "editTouristAttraction";
 }
 

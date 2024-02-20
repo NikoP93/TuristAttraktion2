@@ -64,6 +64,8 @@ public class TouristRepository {
         for (TouristAttraction ta : touristAttractionList) {
             if (ta.getName().equalsIgnoreCase(touristAttraction.getName())) {
                 ta.setDescription(touristAttraction.getDescription());
+                ta.setBy(touristAttraction.getBy());
+                ta.setTagList(touristAttraction.getTagList());
                 return ta;
             }
         }
