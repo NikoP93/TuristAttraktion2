@@ -31,7 +31,7 @@ public class TouristRepository {
     }
 
     public List<String> getCities(){
-        List<String> cityList = new ArrayList<>(List.of(
+        return new ArrayList<>(List.of(
                 "København",
                 "Aalborg",
                 "Odense",
@@ -40,11 +40,11 @@ public class TouristRepository {
                 "Vejle"
         ));
 
-        return cityList;
+
     }
 
     public List<String> getTags(){
-        List<String> tagList = new ArrayList<>(List.of(
+        return new ArrayList<>(List.of(
                 "Underholdning",
                 "Koncert",
                 "Kunst",
@@ -52,7 +52,6 @@ public class TouristRepository {
 
         ));
 
-        return tagList;
     }
 
     public TouristAttraction addTouristAttraction(TouristAttraction touristAttraction) {

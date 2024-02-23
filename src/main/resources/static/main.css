@@ -22,7 +22,8 @@ table, th, td {
     padding: 5px;
     white-space: nowrap;
 }
-thead, tr{
+
+thead, th {
     font-weight: bold;
 }
 
