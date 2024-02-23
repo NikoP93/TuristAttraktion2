@@ -3,7 +3,7 @@ package com.example.touristguide2.service;
 import com.example.touristguide2.model.TouristAttraction;
 import com.example.touristguide2.repository.TouristRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
+
 
 import java.util.List;
 

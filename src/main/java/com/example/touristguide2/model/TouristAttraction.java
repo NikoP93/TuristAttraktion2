@@ -1,6 +1,6 @@
 package com.example.touristguide2.model;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class TouristAttraction {
@@ -51,7 +51,7 @@ public class TouristAttraction {
         this.by = by;
     }
 
-    public void setTagList(List tagList){
+    public void setTagList(List<String> tagList){
         this.tagList = tagList;
     }
 }

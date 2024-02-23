@@ -30,6 +30,7 @@ public class TouristController {
     public String getTags(@PathVariable String name, Model model){
     TouristAttraction touristAttraction = touristServices.getTouristAttraction(name);
     model.addAttribute("tags", touristAttraction.getTagList());
+    model.addAttribute("name",touristAttraction.getName());
     return "tags";
 }
 

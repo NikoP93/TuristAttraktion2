@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{add.css}" rel="stylesheet">
+    <link th:href="@{main.css}" rel="stylesheet">
 
-    <title>Tilføj Touristattraktion</title>
+    <title>Tilføj Turistattraktion</title>
 </head>
 <body>
 <h1> Tilføj touristattraktion</h1>
 <form th:action="@{/attractions/save}" method="post" th:object="${touristAttraction}">
     <label for="name">Navn: </label>
     <input id="name" type="text" th:field="*{name}">
+    <br>
     <label for="beskrivelse">Beskrivelse: </label>
     <input id="beskrivelse" type="text" th:field="*{description}">
+    <br>
     <label for="by">By:</label>
     <select id="by" name="by" th:field="*{by}">
         <option th:each="c : ${cityList}"
@@ -20,7 +22,7 @@
                 th:text="${c}">
         </option>
     </select>
-
+    <br>
     <label>Tags:</label>
     <div th:each="tag : ${tagsList}">
         <input type="checkbox"
