@@ -12,8 +12,8 @@ public class TouristServices {
 
     private TouristRepository repository;
 
-    public TouristServices() {
-        repository = new TouristRepository();
+    public TouristServices(TouristRepository repository) {
+        this.repository = repository;
     }
 
     public List<TouristAttraction> getTouristAttractions() {

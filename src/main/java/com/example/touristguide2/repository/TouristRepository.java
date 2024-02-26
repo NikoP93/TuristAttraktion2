@@ -10,7 +10,7 @@ import java.util.List;
 public class TouristRepository {
 
     private List<TouristAttraction> touristAttractionList =
-            new ArrayList<TouristAttraction>(List.of(
+            new ArrayList<>(List.of(
                     new TouristAttraction("Tivoli", "Forlystelsespark i hjertet af København", "København", List.of("Børnevenlig", "Forlystelsespark")),
                     new TouristAttraction("Amalienborg", "Hjem for de kongelige", "København", List.of("Slot")),
                     new TouristAttraction("Den lille havfrue", "Stedet alle japanere skal tage billeder", "København", List.of("Kunst", "Statue")),
