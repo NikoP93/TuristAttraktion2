@@ -44,10 +44,7 @@ public class TouristServices {
 
     public TouristAttraction deleteTouristAttraction(String name) {
         TouristAttraction deletedTouristAttraction = repository.deleteTouristAttraction(name);
-        if (deletedTouristAttraction != null) {
             return deletedTouristAttraction;
-        }
-        return null;
     }
 
 
