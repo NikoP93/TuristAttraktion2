@@ -33,18 +33,18 @@ public class TouristServices {
     }
 
     public TouristAttraction addTouristAttraction(TouristAttraction touristAttraction) {
-        TouristAttraction newTouristAttraction = repository.addTouristAttraction(touristAttraction);
-        return newTouristAttraction;
+        return repository.addTouristAttraction(touristAttraction);
+
     }
 
     public TouristAttraction updateTouristAttraction(TouristAttraction touristAttraction) {
-        TouristAttraction updatedTouristAttraction = repository.updateTouristAttraction(touristAttraction);
-        return updatedTouristAttraction;
+        return repository.updateTouristAttraction(touristAttraction);
+
     }
 
     public TouristAttraction deleteTouristAttraction(String name) {
-        TouristAttraction deletedTouristAttraction = repository.deleteTouristAttraction(name);
-            return deletedTouristAttraction;
+        return repository.deleteTouristAttraction(name);
+
     }
 
 
