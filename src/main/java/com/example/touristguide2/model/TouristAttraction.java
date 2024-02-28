@@ -54,4 +54,12 @@ public class TouristAttraction {
     public void setTagList(List<String> tagList){
         this.tagList = tagList;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof TouristAttraction touristAttraction)) return false;
+        if (name == null && touristAttraction.getName() == null) return true;
+        return name.equals(touristAttraction.getName());
+    }
 }
