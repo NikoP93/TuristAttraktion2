@@ -19,6 +19,8 @@ public class TouristController {
         this.touristServices = touristServices;
     }
 
+    //Just text so I can commit
+
     @GetMapping("")
     public String getAttractions(Model model) {
         List<TouristAttraction> touristAttractionList = touristServices.getTouristAttractions();
