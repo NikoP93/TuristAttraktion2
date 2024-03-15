@@ -16,20 +16,16 @@ public class TouristRepositoryDB {
 
     @Value("${spring.datasource.url}")
     private String db_url;
-    @Value("${spring.datasource.username")
+    @Value("${spring.datasource.username}")
     private String username;
-    @Value("$spring.datasource.password")
+    @Value("${spring.datasource.password}")
     private String pwd;
-
-    public TouristRepositoryDB(){
-
-    }
 
 
     public List<TouristAttractionDTO> getTouristAttractionList() {
         List<TouristAttractionDTO> touristAttractionList = new ArrayList<>();
 
-        try (Connection con = ConnectionManager.getConnection(db_url, username, pwd)) {
+        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
             String SQL = "SELECT attractions.name,attractions.description,city.name,tags.name FROM attractions JOIN city on attractions.cityID = city.cityID JOIN attractiontags on attractions.attractionID = attractiontags.attractionID JOIN tags on tags.tagID = attractiontags.tagID";
             PreparedStatement psts = con.prepareStatement(SQL);
             ResultSet rs = psts.executeQuery();
@@ -37,17 +33,19 @@ public class TouristRepositoryDB {
             String currentAttractionName = "";
             TouristAttractionDTO currentAttractionDTO = null;
             while (rs.next()) {
-                String aName = rs.getString("name");
-                String description = rs.getString("description");
-                String city = rs.getString("city");
-                TagDTO tagDTO = new TagDTO(rs.getString("tname"));
-                if (aName.equals(currentAttractionName))
+                String aName = rs.getString("attractions.name");
+                String description = rs.getString("attractions.description");
+                String city = rs.getString("city.name");
+                TagDTO tagDTO = new TagDTO(rs.getString("tags.name"));
+                if (aName.equals(currentAttractionName)) {
                     currentAttractionDTO.addTag(tagDTO);
+                }
                 else {
                     currentAttractionDTO = new TouristAttractionDTO(aName, description, city, new ArrayList<>(List.of(tagDTO)));
                     currentAttractionName = aName;
+                    touristAttractionList.add(currentAttractionDTO);
                 }
-                touristAttractionList.add(currentAttractionDTO);
+
             }
         } catch (SQLException e) {
             System.out.println("Cannot connecto to database");

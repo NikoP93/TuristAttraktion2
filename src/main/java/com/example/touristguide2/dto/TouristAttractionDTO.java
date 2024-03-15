@@ -24,4 +24,36 @@ public class TouristAttractionDTO {
     public void addTag(TagDTO tagDTO){
         taglistDTO.add(tagDTO);
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public List<TagDTO> getTaglistDTO() {
+        return taglistDTO;
+    }
+
+    public void setTaglistDTO(List<TagDTO> taglistDTO) {
+        this.taglistDTO = taglistDTO;
+    }
 }

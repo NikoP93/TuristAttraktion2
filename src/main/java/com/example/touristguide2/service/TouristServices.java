@@ -16,14 +16,10 @@ public class TouristServices {
     private TouristRepositoryDB dbRepository;
 
 
-    public TouristServices(){
-
-    }
-
-    public TouristServices(TouristRepository repository, TouristRepositoryDB dbRepository){
-        this.repository = repository;
-        this.dbRepository = dbRepository;
-    }
+//    public TouristServices(TouristRepository repository, TouristRepositoryDB dbRepository){
+//        this.repository = repository;
+//        this.dbRepository = dbRepository;
+//    }
 
 
 //    public TouristServices(TouristRepository repository) {
@@ -31,9 +27,9 @@ public class TouristServices {
 //    }
 //
 //
-//    public TouristServices(TouristRepositoryDB dbRepository){
-//        this.dbRepository = dbRepository;
-//    }
+    public TouristServices(TouristRepositoryDB dbRepository){
+        this.dbRepository = dbRepository;
+    }
 
     public List<TouristAttractionDTO> getTouristAttractions() {
         return dbRepository.getTouristAttractionList();

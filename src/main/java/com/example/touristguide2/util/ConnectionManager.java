@@ -15,7 +15,7 @@ public class ConnectionManager {
 
     public static Connection getConnection(String db_url, String uid, String psw){
 
-        if(conn != null) return conn;
+        if (conn != null) return conn;
 
         try{
             conn = DriverManager.getConnection(db_url,uid,psw);
