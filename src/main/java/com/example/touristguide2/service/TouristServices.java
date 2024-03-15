@@ -1,7 +1,9 @@
 package com.example.touristguide2.service;
 
+import com.example.touristguide2.dto.TouristAttractionDTO;
 import com.example.touristguide2.model.TouristAttraction;
 import com.example.touristguide2.repository.TouristRepository;
+import com.example.touristguide2.repository.TouristRepositoryDB;
 import org.springframework.stereotype.Service;
 
 
@@ -11,13 +13,18 @@ import java.util.List;
 public class TouristServices {
 
     private TouristRepository repository;
+    private TouristRepositoryDB dbRepository;
 
     public TouristServices(TouristRepository repository) {
         this.repository = repository;
     }
 
-    public List<TouristAttraction> getTouristAttractions() {
-        return repository.getTouristAttractionList();
+    public TouristServices(TouristRepositoryDB dbRepository){
+        this.dbRepository = dbRepository;
+    }
+
+    public List<TouristAttractionDTO> getTouristAttractions() {
+        return dbRepository.getTouristAttractionList();
     }
 
     public TouristAttraction getTouristAttraction(String name) {

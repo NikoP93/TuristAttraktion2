@@ -1,5 +1,6 @@
 package com.example.touristguide2.controller;
 
+import com.example.touristguide2.dto.TouristAttractionDTO;
 import com.example.touristguide2.model.TouristAttraction;
 import com.example.touristguide2.service.TouristServices;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ public class TouristController {
 
     private TouristServices touristServices;
 
+
     public TouristController(TouristServices touristServices) {
         this.touristServices = touristServices;
     }
@@ -23,7 +25,7 @@ public class TouristController {
 
     @GetMapping("")
     public String getAttractions(Model model) {
-        List<TouristAttraction> touristAttractionList = touristServices.getTouristAttractions();
+        List<TouristAttractionDTO> touristAttractionList = touristServices.getTouristAttractions();
         model.addAttribute("touristAttractionlist", touristAttractionList);
         return "attractionlist";
     }
