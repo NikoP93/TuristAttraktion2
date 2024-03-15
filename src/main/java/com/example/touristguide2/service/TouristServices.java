@@ -15,9 +15,16 @@ public class TouristServices {
     private TouristRepository repository;
     private TouristRepositoryDB dbRepository;
 
+
+    public TouristServices(){
+
+    }
+
+
     public TouristServices(TouristRepository repository) {
         this.repository = repository;
     }
+
 
     public TouristServices(TouristRepositoryDB dbRepository){
         this.dbRepository = dbRepository;
