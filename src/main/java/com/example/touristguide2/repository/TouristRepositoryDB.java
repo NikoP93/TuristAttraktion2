@@ -21,6 +21,10 @@ public class TouristRepositoryDB {
     @Value("$spring.datasource.password")
     private String pwd;
 
+    public TouristRepositoryDB(){
+
+    }
+
 
     public List<TouristAttractionDTO> getTouristAttractionList() {
         List<TouristAttractionDTO> touristAttractionList = new ArrayList<>();
