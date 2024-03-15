@@ -4,6 +4,10 @@ public class TagDTO {
 
     private String tname;
 
+    public TagDTO(){
+
+    }
+
     public TagDTO(String tname){
         this.tname = tname;
     }
