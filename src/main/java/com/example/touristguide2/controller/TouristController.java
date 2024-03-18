@@ -31,8 +31,8 @@ public class TouristController {
 
 @GetMapping("/{name}/tags")
     public String getTags(@PathVariable String name, Model model){
-    TouristAttraction touristAttraction = touristServices.getTouristAttraction(name);
-    model.addAttribute("tags", touristAttraction.getTagList());
+    TouristAttractionDTO touristAttraction = touristServices.getTouristAttraction(name);
+    model.addAttribute("tags", touristAttraction.getTaglistDTO());
     model.addAttribute("name",touristAttraction.getName());
     return "tags";
 }

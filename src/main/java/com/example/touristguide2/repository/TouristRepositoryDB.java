@@ -26,9 +26,15 @@ public class TouristRepositoryDB {
         List<TouristAttractionDTO> touristAttractionList = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
-            String SQL = "SELECT attractions.name,attractions.description,city.name,tags.name FROM attractions JOIN city on attractions.cityID = city.cityID JOIN attractiontags on attractions.attractionID = attractiontags.attractionID JOIN tags on tags.tagID = attractiontags.tagID";
-            PreparedStatement psts = con.prepareStatement(SQL);
-            ResultSet rs = psts.executeQuery();
+            String SQL = """
+                     SELECT attractions.name,attractions.description,city.name,tags.name
+                     FROM attractions 
+                     JOIN city on attractions.cityID = city.cityID 
+                     JOIN attractiontags on attractions.attractionID = attractiontags.attractionID 
+                     JOIN tags on tags.tagID = attractiontags.tagID
+                     """;
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            ResultSet rs = pstmt.executeQuery();
 
             String currentAttractionName = "";
             TouristAttractionDTO currentAttractionDTO = null;
@@ -53,6 +59,38 @@ public class TouristRepositoryDB {
         }
         return touristAttractionList;
     }
+
+
+    public TouristAttractionDTO getTouristAttraction(String name){
+        TouristAttractionDTO touristAttraction = null;
+        try(Connection con = DriverManager.getConnection(db_url,username,pwd)) {
+         String SQL = """
+                 SELECT attractions.name, attractions.description, city.name, tags.name
+                 FROM attractions
+                 JOIN city on attractions.cityID = city.cityID
+                 JOIN attractiontags on attractions.attractionID = attractiontags.AttractionID
+                 JOIN tags on tags.tagID = attractiontags.TagID
+                 WHERE attractions.name = ?;
+                 """;
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setString(1,name);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                String aName = rs.getString("attractions.name");
+                String description = rs.getString("attractions.description");
+                String city = rs.getString("city.name");
+                TagDTO tagDTO = new TagDTO(rs.getString("tags.name"));
+                touristAttraction = new TouristAttractionDTO(aName,description,city,new ArrayList<>(List.of(tagDTO)));
+
+            }
+            return touristAttraction;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
 
 
 }

@@ -35,8 +35,8 @@ public class TouristServices {
         return dbRepository.getTouristAttractionList();
     }
 
-    public TouristAttraction getTouristAttraction(String name) {
-        return repository.getTouristAttraction(name);
+    public TouristAttractionDTO getTouristAttraction(String name) {
+        return dbRepository.getTouristAttraction(name);
     }
 
     public List<String> getCities(){
