@@ -1,5 +1,6 @@
 package com.example.touristguide2.controller;
 
+import com.example.touristguide2.dto.TagDTO;
 import com.example.touristguide2.dto.TouristAttractionDTO;
 import com.example.touristguide2.model.TouristAttraction;
 import com.example.touristguide2.service.TouristServices;
@@ -32,7 +33,8 @@ public class TouristController {
 @GetMapping("/{name}/tags")
     public String getTags(@PathVariable String name, Model model){
     TouristAttractionDTO touristAttraction = touristServices.getTouristAttraction(name);
-    model.addAttribute("tags", touristAttraction.getTaglistDTO());
+    List<TagDTO> taglist = touristServices.getTagDTO(name);
+    model.addAttribute("tags", taglist);
     model.addAttribute("name",touristAttraction.getName());
     return "tags";
 }
@@ -55,7 +57,7 @@ public class TouristController {
 
 @GetMapping("/{name}/edit")
     public String editAttraction(@PathVariable String name, Model model){
-    TouristAttraction editedAttraction = touristServices.getTouristAttraction(name);
+    TouristAttraction editedAttraction = touristServices.getTouristAttraction1(name);
     model.addAttribute("editedTouristAttraction", editedAttraction);
     List<String> cityList = touristServices.getCities();
     model.addAttribute("cityList",cityList);

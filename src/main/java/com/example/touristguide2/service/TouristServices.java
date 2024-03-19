@@ -1,5 +1,6 @@
 package com.example.touristguide2.service;
 
+import com.example.touristguide2.dto.TagDTO;
 import com.example.touristguide2.dto.TouristAttractionDTO;
 import com.example.touristguide2.model.TouristAttraction;
 import com.example.touristguide2.repository.TouristRepository;
@@ -37,6 +38,14 @@ public class TouristServices {
 
     public TouristAttractionDTO getTouristAttraction(String name) {
         return dbRepository.getTouristAttraction(name);
+    }
+
+    public List<TagDTO> getTagDTO(String name){
+        return dbRepository.getTagListDTO(name);
+    }
+
+    public TouristAttraction getTouristAttraction1(String name){
+        return repository.getTouristAttraction(name);
     }
 
     public List<String> getCities(){

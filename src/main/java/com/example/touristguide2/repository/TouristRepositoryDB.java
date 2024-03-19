@@ -27,12 +27,12 @@ public class TouristRepositoryDB {
 
         try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
             String SQL = """
-                     SELECT attractions.name,attractions.description,city.name,tags.name
-                     FROM attractions 
-                     JOIN city on attractions.cityID = city.cityID 
-                     JOIN attractiontags on attractions.attractionID = attractiontags.attractionID 
-                     JOIN tags on tags.tagID = attractiontags.tagID
-                     """;
+                    SELECT attractions.name,attractions.description,city.name,tags.name
+                    FROM attractions 
+                    JOIN city on attractions.cityID = city.cityID 
+                    JOIN attractiontags on attractions.attractionID = attractiontags.attractionID 
+                    JOIN tags on tags.tagID = attractiontags.tagID
+                    """;
             PreparedStatement pstmt = con.prepareStatement(SQL);
             ResultSet rs = pstmt.executeQuery();
 
@@ -45,8 +45,7 @@ public class TouristRepositoryDB {
                 TagDTO tagDTO = new TagDTO(rs.getString("tags.name"));
                 if (aName.equals(currentAttractionName)) {
                     currentAttractionDTO.addTag(tagDTO);
-                }
-                else {
+                } else {
                     currentAttractionDTO = new TouristAttractionDTO(aName, description, city, new ArrayList<>(List.of(tagDTO)));
                     currentAttractionName = aName;
                     touristAttractionList.add(currentAttractionDTO);
@@ -61,26 +60,26 @@ public class TouristRepositoryDB {
     }
 
 
-    public TouristAttractionDTO getTouristAttraction(String name){
+    public TouristAttractionDTO getTouristAttraction(String name) {
         TouristAttractionDTO touristAttraction = null;
-        try(Connection con = DriverManager.getConnection(db_url,username,pwd)) {
-         String SQL = """
-                 SELECT attractions.name, attractions.description, city.name, tags.name
-                 FROM attractions
-                 JOIN city on attractions.cityID = city.cityID
-                 JOIN attractiontags on attractions.attractionID = attractiontags.AttractionID
-                 JOIN tags on tags.tagID = attractiontags.TagID
-                 WHERE attractions.name = ?;
-                 """;
+        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
+            String SQL = """
+                    SELECT attractions.name, attractions.description, city.name, tags.name
+                    FROM attractions
+                    JOIN city on attractions.cityID = city.cityID
+                    JOIN attractiontags on attractions.attractionID = attractiontags.AttractionID
+                    JOIN tags on tags.tagID = attractiontags.TagID
+                    WHERE attractions.name = ?;
+                    """;
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setString(1,name);
+            pstmt.setString(1, name);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()){
+            if (rs.next()) {
                 String aName = rs.getString("attractions.name");
                 String description = rs.getString("attractions.description");
                 String city = rs.getString("city.name");
                 TagDTO tagDTO = new TagDTO(rs.getString("tags.name"));
-                touristAttraction = new TouristAttractionDTO(aName,description,city,new ArrayList<>(List.of(tagDTO)));
+                touristAttraction = new TouristAttractionDTO(aName, description, city, new ArrayList<>(List.of(tagDTO)));
 
             }
             return touristAttraction;
@@ -90,9 +89,31 @@ public class TouristRepositoryDB {
 
     }
 
+    public List<TagDTO> getTagListDTO(String name) {
+        List<TagDTO> tagList = new ArrayList<>();
+        TagDTO tagDTO;
+        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
+            String SQL = """
+                    SELECT tags.name
+                    FROM attractiontags
+                    join attractions on attractions.attractionID = attractiontags.AttractionID
+                    JOIN tags on tags.tagID = attractiontags.tagID
+                    WHERE attractions.name = ?;
+                    """;
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String tName = rs.getString("tags.name");
+                tagDTO = new TagDTO(tName);
+                tagList.add(tagDTO);
 
+            }
+            return tagList;
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
-
-

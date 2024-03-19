@@ -1,5 +1,7 @@
 package com.example.touristguide2.dto;
 
+import com.example.touristguide2.model.TouristAttraction;
+
 import java.util.List;
 
 public class TouristAttractionDTO {
@@ -55,5 +57,13 @@ public class TouristAttractionDTO {
 
     public void setTaglistDTO(List<TagDTO> taglistDTO) {
         this.taglistDTO = taglistDTO;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof TouristAttractionDTO touristAttractionDTO)) return false;
+        if (name == null && touristAttractionDTO.getName() == null) return true;
+        return name.equals(touristAttractionDTO.getName());
     }
 }
