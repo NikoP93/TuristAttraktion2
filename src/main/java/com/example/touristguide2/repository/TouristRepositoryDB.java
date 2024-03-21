@@ -133,6 +133,8 @@ public class TouristRepositoryDB {
         return rows;
     }
 
+    //Changes
+
     private boolean deleteAttractionTags (String name){
         int rows = 0;
         try(Connection con = DriverManager.getConnection(db_url,username,pwd)){
