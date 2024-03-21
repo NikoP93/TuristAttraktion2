@@ -25,11 +25,11 @@ public class TouristRepositoryDB {
 
         try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
             String SQL = """
-                    SELECT attractions.name,attractions.description,city.name,tags.name
+                    SELECT attractions.Name,attractions.Description,city.Name,tags.Name
                     FROM attractions 
-                    JOIN city on attractions.cityID = city.cityID 
-                    JOIN attractiontags on attractions.attractionID = attractiontags.attractionID 
-                    JOIN tags on tags.tagID = attractiontags.tagID
+                    JOIN city on attractions.CityID = city.CityID 
+                    JOIN attractiontags on attractions.AttractionID = attractiontags.AttractionID 
+                    JOIN tags on tags.TagID = attractiontags.TagID
                     """;
             PreparedStatement pstmt = con.prepareStatement(SQL);
             ResultSet rs = pstmt.executeQuery();
@@ -62,12 +62,12 @@ public class TouristRepositoryDB {
         TouristAttractionDTO touristAttraction = null;
         try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
             String SQL = """
-                    SELECT attractions.name, attractions.description, city.name, tags.name
+                    SELECT attractions.Name, attractions.Description, city.Name, tags.Name
                     FROM attractions
-                    JOIN city on attractions.cityID = city.cityID
-                    JOIN attractiontags on attractions.attractionID = attractiontags.AttractionID
-                    JOIN tags on tags.tagID = attractiontags.TagID
-                    WHERE attractions.name = ?;
+                    JOIN city on attractions.CityID = city.CityID
+                    JOIN attractiontags on attractions.AttractionID = attractiontags.AttractionID
+                    JOIN tags on tags.TagID = attractiontags.TagID
+                    WHERE attractions.Name = ?;
                     """;
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, name);
@@ -92,11 +92,11 @@ public class TouristRepositoryDB {
         TagDTO tagDTO;
         try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
             String SQL = """
-                    SELECT tags.name
+                    SELECT tags.Name
                     FROM attractiontags
-                    join attractions on attractions.attractionID = attractiontags.AttractionID
-                    JOIN tags on tags.tagID = attractiontags.tagID
-                    WHERE attractions.name = ?;
+                    join attractions on attractions.AttractionID = attractiontags.AttractionID
+                    JOIN tags on tags.TagID = attractiontags.TagID
+                    WHERE attractions.Name = ?;
                     """;
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, name);
@@ -114,51 +114,50 @@ public class TouristRepositoryDB {
         }
     }
 
-    public TouristAttractionDTO addTouristAttraction(TouristAttractionDTO attraction) {
-        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
-            String SQL = """ 
-                INSERT INTO attractions(name,cityID,description) VALUES(?,?,?);
-                """;
-            PreparedStatement pstmt = con.prepareStatement(SQL);
+//    public TouristAttractionDTO addTouristAttraction(TouristAttractionDTO attraction) {
+//        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
+//            String SQL = """
+//                    INSERT INTO attractions(name,cityID,description) VALUES(?,?,?);
+//                    """;
+//            PreparedStatement pstmt = con.prepareStatement(SQL);
+//
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return attraction;
+//    }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return attraction;
-    }
+    public boolean deleteAttraction(String name) {
+        return deleteAttractionTags(name) && deleteFromAttractionTable(name);
 
-    public boolean deleteAttraction(String name){
-        boolean rows =deleteAttractionTags(name);
-        deleteFromAttractionTable(name);
-        return rows;
     }
 
     //Changes
 
-    private boolean deleteAttractionTags (String name){
+    private boolean deleteAttractionTags(String name) {
         int rows = 0;
-        try(Connection con = DriverManager.getConnection(db_url,username,pwd)){
+        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
             String SQL = """
-                    DELETE FROM ATTRACTIONTAGS WHERE AttractionID = 
-                    (SELECT AttractionID FROM ATTRACTIONS WHERE Name = 'Tivoli' )
+                    DELETE FROM attractiontags WHERE AttractionID = 
+                    (SELECT AttractionID FROM attractions WHERE Name = ? )
                                         """;
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            //pstmt.setString(1,name);
+            pstmt.setString(1, name);
             rows = pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return rows >=1;
+        return rows >= 0;
     }
 
-    private boolean deleteFromAttractionTable(String name){
+    private boolean deleteFromAttractionTable(String name) {
         int rows = 0;
-        try(Connection con = DriverManager.getConnection(db_url,username,pwd)){
+        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
             String SQL = """
-                    DELETE FROM ATTRACTIONS WHERE Name = ?;
+                    DELETE FROM attractions WHERE Name = ?;
                     """;
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setString(1,name);
+            pstmt.setString(1, name);
             rows = pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -47,7 +47,7 @@ public class TouristServices {
 
 
     public boolean deleteAttraction(String name){
-        return dbRepository.deleteAttraction(name);
+       return dbRepository.deleteAttraction(name);
     }
 
     public TouristAttraction getTouristAttraction1(String name){

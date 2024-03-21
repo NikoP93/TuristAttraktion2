@@ -59,6 +59,7 @@ public class TouristAttractionDTO {
         this.taglistDTO = taglistDTO;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
