@@ -2,8 +2,6 @@ package com.example.touristguide2.repository;
 
 import com.example.touristguide2.dto.TagDTO;
 import com.example.touristguide2.dto.TouristAttractionDTO;
-import com.example.touristguide2.model.TouristAttraction;
-import com.example.touristguide2.util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -116,4 +114,53 @@ public class TouristRepositoryDB {
         }
     }
 
+    public TouristAttractionDTO addTouristAttraction(TouristAttractionDTO attraction) {
+        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
+            String SQL = """ 
+                INSERT INTO attractions(name,cityID,description) VALUES(?,?,?);
+                """;
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return attraction;
+    }
+
+    public boolean deleteAttraction(String name){
+        boolean rows =deleteAttractionTags(name);
+        deleteFromAttractionTable(name);
+        return rows;
+    }
+
+    private boolean deleteAttractionTags (String name){
+        int rows = 0;
+        try(Connection con = DriverManager.getConnection(db_url,username,pwd)){
+            String SQL = """
+                    DELETE FROM ATTRACTIONTAGS WHERE AttractionID = 
+                    (SELECT AttractionID FROM ATTRACTIONS WHERE Name = 'Tivoli' )
+                                        """;
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            //pstmt.setString(1,name);
+            rows = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return rows >=1;
+    }
+
+    private boolean deleteFromAttractionTable(String name){
+        int rows = 0;
+        try(Connection con = DriverManager.getConnection(db_url,username,pwd)){
+            String SQL = """
+                    DELETE FROM ATTRACTIONS WHERE Name = ?;
+                    """;
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setString(1,name);
+            rows = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return rows == 1;
+    }
 }

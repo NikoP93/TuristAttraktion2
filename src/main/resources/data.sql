@@ -1,5 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS TouristGuideDB;
-
+SET SCHEMA TouristGuideDB;
 
 DROP TABLE if exists ATTRACTIONTAGS;
 DROP TABLE if exists ATTRACTIONS;
@@ -14,7 +14,7 @@ CREATE TABLE CITY (
 );
 
 CREATE TABLE ATTRACTIONS (
-                             AttractionID INTEGER NOT NULL AUTO_INCREMENT ,
+                             AttractionID INTEGER AUTO_INCREMENT ,
                              CityID INTEGER,
                              Name VARCHAR(50),
                              Description VARCHAR(100),

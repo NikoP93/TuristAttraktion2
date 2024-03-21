@@ -44,6 +44,12 @@ public class TouristServices {
         return dbRepository.getTagListDTO(name);
     }
 
+
+
+    public boolean deleteAttraction(String name){
+        return dbRepository.deleteAttraction(name);
+    }
+
     public TouristAttraction getTouristAttraction1(String name){
         return repository.getTouristAttraction(name);
     }
