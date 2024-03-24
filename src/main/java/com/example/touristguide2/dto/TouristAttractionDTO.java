@@ -11,9 +11,7 @@ public class TouristAttractionDTO {
     private String city;
     private List<TagDTO> taglistDTO;
 
-
     public TouristAttractionDTO(){
-
     }
 
     public TouristAttractionDTO(String name, String description, String city, List<TagDTO> taglistDTO){

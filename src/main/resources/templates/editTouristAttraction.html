@@ -11,7 +11,7 @@
     <label for="beskrivelse"> Beskrivelse: </label>
     <input id="beskrivelse" type="text" th:field="*{description}"> <br>
     <label for="by">By:</label>
-    <select id="by" name="by" th:field="*{by}">
+    <select id="by" name="by" th:field="*{city}">
         <option th:each="c : ${cityList}"
                 th:value="${c}"
                 th:text="${c}">
@@ -21,8 +21,8 @@
     <label>Tags:</label>
     <div th:each="tag : ${tagsList}">
         <input type="checkbox"
-               th:field="*{tagList}"
-               th:value="${tag}" >
+               th:field="*{taglistDTO}"
+               th:value="${tag.tname}" >
         <label th:text="${tag}"></label>
     </div> <br>
     <button type="submit">Ok</button>

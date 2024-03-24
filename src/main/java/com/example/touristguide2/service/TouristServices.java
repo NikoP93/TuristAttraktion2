@@ -17,27 +17,12 @@ public class TouristServices {
     private TouristRepositoryDB dbRepository;
 
 
-//    public TouristServices(TouristRepository repository, TouristRepositoryDB dbRepository){
-//        this.repository = repository;
-//        this.dbRepository = dbRepository;
-//    }
-
-
 //    public TouristServices(TouristRepository repository) {
 //        this.repository = repository;
 //    }
-//
-//
+
     public TouristServices(TouristRepositoryDB dbRepository){
         this.dbRepository = dbRepository;
-    }
-
-    public List<TouristAttractionDTO> getTouristAttractions() {
-        return dbRepository.getTouristAttractionList();
-    }
-
-    public TouristAttractionDTO getTouristAttraction(String name) {
-        return dbRepository.getTouristAttraction(name);
     }
 
     public List<TagDTO> getTagDTO(String name){
@@ -53,10 +38,27 @@ public class TouristServices {
     }
 
 
+    public List<TouristAttractionDTO> getTouristAttractions() {
+        return dbRepository.getTouristAttractionList();
+    }
+
+    public TouristAttractionDTO getTouristAttraction(String name) {
+        return dbRepository.getTouristAttraction(name);
+    }
+
 
     public boolean deleteAttraction(String name){
        return dbRepository.deleteAttraction(name);
     }
+
+    public TouristAttractionDTO addTouristAttraction(TouristAttractionDTO touristAttraction) {
+        return dbRepository.addTouristAttraction(touristAttraction);
+
+    }
+    public TouristAttractionDTO editTouristAttraction(TouristAttractionDTO touristAttraction){
+        return dbRepository.editTouristAttraction(touristAttraction);
+    }
+
 
 //    public TouristAttraction getTouristAttraction1(String name){
 //        return repository.getTouristAttraction(name);
@@ -69,21 +71,17 @@ public class TouristServices {
 //    public List<String> getTags(){
 //        return repository.getTags();
 //    }
-
-    public TouristAttractionDTO addTouristAttraction(TouristAttractionDTO touristAttraction) {
-        return dbRepository.addTouristAttraction(touristAttraction);
-
-    }
-
-    public TouristAttraction updateTouristAttraction(TouristAttraction touristAttraction) {
-        return repository.updateTouristAttraction(touristAttraction);
-
-    }
-
-    public TouristAttraction deleteTouristAttraction(String name) {
-        return repository.deleteTouristAttraction(name);
-
-    }
+//
+//
+//    public TouristAttraction updateTouristAttraction(TouristAttraction touristAttraction) {
+//        return repository.updateTouristAttraction(touristAttraction);
+//
+//    }
+//
+//    public TouristAttraction deleteTouristAttraction(String name) {
+//        return repository.deleteTouristAttraction(name);
+//
+//    }
 
 
 }

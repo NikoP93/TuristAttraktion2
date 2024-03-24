@@ -193,6 +193,63 @@ public class TouristRepositoryDB {
         return attraction;
     }
 
+
+    public TouristAttractionDTO editTouristAttraction(TouristAttractionDTO attraction) {
+        int rows = 0;
+        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
+            String SQLAttraction = """
+                    UPDATE attractions
+                    SET Description = ?,CityID = ?
+                    WHERE Name = ?
+                    """;
+            PreparedStatement psmtAttraction = con.prepareStatement(SQLAttraction);
+            psmtAttraction.setString(1,attraction.getDescription());
+            psmtAttraction.setInt(2,getCityId(attraction.getName()));
+            psmtAttraction.setString(3,attraction.getName());
+            rows = psmtAttraction.executeUpdate();
+
+            String SQLAttractionTags = """
+                    DELETE FROM attractiontags
+                    WHERE attractionID = (SELECT attractionID FROM attractions WHERE name = ?)
+                    """;
+            PreparedStatement psmtAttractionTags = con.prepareStatement(SQLAttractionTags);
+            psmtAttractionTags.setString(1,attraction.getName());
+            psmtAttractionTags.executeUpdate();
+
+            String insertTagSQL = "INSERT INTO attractiontags(AttractionID,TagID) VALUES(?,?)";
+            PreparedStatement pstmtTag = con.prepareStatement(insertTagSQL);
+            int attractionID = getAttractionID(attraction.getName());
+            for (TagDTO tagDTO : attraction.getTaglistDTO()) {
+                int tagID = getTagId(tagDTO.getTname());
+                pstmtTag.setInt(1,attractionID);
+                pstmtTag.setInt(2,tagID);
+                pstmtTag.executeUpdate();
+            }
+
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
+        }
+        return attraction;
+    }
+
+    public int getAttractionID(String name){
+        try(Connection con = DriverManager.getConnection(db_url, username,pwd)){
+            String attractionIDSQL = "SELECT AttractionID FROM attractions WHERE name = ?";
+            PreparedStatement pstmt = con.prepareStatement(attractionIDSQL);
+            pstmt.setString(1,name);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                return rs.getInt("AttractionID");
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
     private int getCityId(String cityName) {
         try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
             String selectCitySQL = "SELECT cityID FROM city WHERE name = ?";

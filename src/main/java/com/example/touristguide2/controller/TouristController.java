@@ -56,22 +56,22 @@ public class TouristController {
     return "redirect:/attractions";
 }
 
-//@GetMapping("/{name}/edit")
-//    public String editAttraction(@PathVariable String name, Model model){
-//    TouristAttraction editedAttraction = touristServices.getTouristAttraction(name);
-//    model.addAttribute("editedTouristAttraction", editedAttraction);
-//    List<String> cityList = touristServices.getCities();
-//    model.addAttribute("cityList",cityList);
-//    List<TagDTO> tagsList = touristServices.getTags();
-//    model.addAttribute("tagsList",tagsList);
-//    return "editTouristAttraction";
-//}
-//
-//@PostMapping("/update")
-//    public String updateAttraction(@ModelAttribute TouristAttraction touristAttraction){
-//    touristServices.updateTouristAttraction(touristAttraction);
-//    return "redirect:/attractions";
-//}
+@GetMapping("/{name}/edit")
+    public String editAttraction(@PathVariable String name, Model model){
+    TouristAttractionDTO editedAttraction = touristServices.getTouristAttraction(name);
+    model.addAttribute("editedTouristAttraction", editedAttraction);
+    List<String> cityList = touristServices.getCities();
+    model.addAttribute("cityList",cityList);
+    List<TagDTO> tagsList = touristServices.getTags();
+    model.addAttribute("tagsList",tagsList);
+    return "editTouristAttraction";
+}
+
+@PostMapping("/update")
+    public String updateAttraction(@ModelAttribute TouristAttractionDTO touristAttraction){
+    touristServices.editTouristAttraction(touristAttraction);
+    return "redirect:/attractions";
+}
 
 @GetMapping("{name}/delete")
     public String deleteAttraction(@PathVariable String name){
