@@ -23,7 +23,7 @@ public class TouristRepositoryDB {
     public List<TagDTO> getTags(){
         List<TagDTO> tags = new ArrayList<>();
         try (Connection con = DriverManager.getConnection(db_url,username,pwd)){
-            String SQl = "SELECT * FROM tag";
+            String SQl = "SELECT * FROM tags";
             PreparedStatement pstmt = con.prepareStatement(SQl);
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()){
@@ -165,7 +165,7 @@ public class TouristRepositoryDB {
             pstmtAttraction.setString(1, attraction.getName());
             pstmtAttraction.setInt(2, cityID);
             pstmtAttraction.setString(3, attraction.getDescription());
-            pstmtAttraction.executeQuery();
+            pstmtAttraction.executeUpdate();
 
             //Get the generated Attraction ID
             ResultSet generatedKeys = pstmtAttraction.getGeneratedKeys();
@@ -183,7 +183,7 @@ public class TouristRepositoryDB {
                 int tagID = getTagId(tagDTO.getTname());
                 pstmtTag.setInt(1,attractionID);
                 pstmtTag.setInt(2,tagID);
-                pstmtTag.executeQuery();
+                pstmtTag.executeUpdate();
             }
 
 
