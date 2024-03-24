@@ -195,18 +195,19 @@ public class TouristRepositoryDB {
 
 
     public TouristAttractionDTO editTouristAttraction(TouristAttractionDTO attraction) {
-        int rows = 0;
+
         try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
             String SQLAttraction = """
                     UPDATE attractions
-                    SET Description = ?,CityID = ?
+                    SET Description = ?, CityID = ?
                     WHERE Name = ?
                     """;
+            int cityID = getCityId(attraction.getCity());
             PreparedStatement psmtAttraction = con.prepareStatement(SQLAttraction);
             psmtAttraction.setString(1,attraction.getDescription());
-            psmtAttraction.setInt(2,getCityId(attraction.getName()));
+            psmtAttraction.setInt(2,cityID);
             psmtAttraction.setString(3,attraction.getName());
-            rows = psmtAttraction.executeUpdate();
+            psmtAttraction.executeUpdate();
 
             String SQLAttractionTags = """
                     DELETE FROM attractiontags
@@ -252,7 +253,7 @@ public class TouristRepositoryDB {
 
     private int getCityId(String cityName) {
         try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
-            String selectCitySQL = "SELECT cityID FROM city WHERE name = ?";
+            String selectCitySQL = "SELECT CityID FROM city WHERE Name = ?";
             PreparedStatement pstmt = con.prepareStatement(selectCitySQL);
             pstmt.setString(1, cityName);
             ResultSet rs = pstmt.executeQuery();
