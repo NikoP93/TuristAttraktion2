@@ -20,6 +20,43 @@ public class TouristRepositoryDB {
     private String pwd;
 
 
+    public List<TagDTO> getTags(){
+        List<TagDTO> tags = new ArrayList<>();
+        try (Connection con = DriverManager.getConnection(db_url,username,pwd)){
+            String SQl = "SELECT * FROM tag";
+            PreparedStatement pstmt = con.prepareStatement(SQl);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                TagDTO tag = new TagDTO(rs.getString("Name"));
+                tags.add(tag);
+
+            }
+        }
+
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return tags;
+    }
+
+    public List<String> getCities(){
+        List<String> cityList = new ArrayList<>();
+        try (Connection con = DriverManager.getConnection(db_url,username,pwd)){
+            String SQL = "SELECT * FROM city";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                cityList.add(rs.getString("Name"));
+            }
+
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return cityList;
+    }
+
+
     public List<TouristAttractionDTO> getTouristAttractionList() {
         List<TouristAttractionDTO> touristAttractionList = new ArrayList<>();
 
@@ -73,10 +110,10 @@ public class TouristRepositoryDB {
             pstmt.setString(1, name);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                String aName = rs.getString("attractions.name");
-                String description = rs.getString("attractions.description");
-                String city = rs.getString("city.name");
-                TagDTO tagDTO = new TagDTO(rs.getString("tags.name"));
+                String aName = rs.getString("attractions.Name");
+                String description = rs.getString("attractions.Description");
+                String city = rs.getString("city.Name");
+                TagDTO tagDTO = new TagDTO(rs.getString("tags.Name"));
                 touristAttraction = new TouristAttractionDTO(aName, description, city, new ArrayList<>(List.of(tagDTO)));
 
             }
@@ -114,25 +151,85 @@ public class TouristRepositoryDB {
         }
     }
 
-//    public TouristAttractionDTO addTouristAttraction(TouristAttractionDTO attraction) {
-//        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
-//            String SQL = """
-//                    INSERT INTO attractions(name,cityID,description) VALUES(?,?,?);
-//                    """;
-//            PreparedStatement pstmt = con.prepareStatement(SQL);
-//
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return attraction;
-//    }
+    public TouristAttractionDTO addTouristAttraction(TouristAttractionDTO attraction) {
+        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
+
+            //Get city ID from method down below
+            int cityID = getCityId(attraction.getCity());
+
+            //Insert new attraction
+            String SQL = """
+                    INSERT INTO attractions(name,cityID,description) VALUES(?,?,?);
+                    """;
+            PreparedStatement pstmtAttraction = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmtAttraction.setString(1, attraction.getName());
+            pstmtAttraction.setInt(2, cityID);
+            pstmtAttraction.setString(3, attraction.getDescription());
+            pstmtAttraction.executeQuery();
+
+            //Get the generated Attraction ID
+            ResultSet generatedKeys = pstmtAttraction.getGeneratedKeys();
+            int attractionID = -1;
+            if (generatedKeys.next()) {
+                attractionID = generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Failed to get generated KEY");
+            }
+
+            //Associate the new attraction with the tags
+            String insertTagSQL = "INSERT INTO attractiontags(AttractionID,TagID) VALUES(?,?)";
+            PreparedStatement pstmtTag = con.prepareStatement(insertTagSQL);
+            for (TagDTO tagDTO : attraction.getTaglistDTO()) {
+                int tagID = getTagId(tagDTO.getTname());
+                pstmtTag.setInt(1,attractionID);
+                pstmtTag.setInt(2,tagID);
+                pstmtTag.executeQuery();
+            }
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return attraction;
+    }
+
+    private int getCityId(String cityName) {
+        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
+            String selectCitySQL = "SELECT cityID FROM city WHERE name = ?";
+            PreparedStatement pstmt = con.prepareStatement(selectCitySQL);
+            pstmt.setString(1, cityName);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("CityID");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
+
+    private int getTagId(String tagName){
+        try (Connection con = DriverManager.getConnection(db_url, username, pwd)) {
+            String selectTagSQL = "SELECT TagID FROM tags WHERE name = ?";
+            PreparedStatement pstmt = con.prepareStatement(selectTagSQL);
+            pstmt.setString(1, tagName);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("TagID");
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
 
     public boolean deleteAttraction(String name) {
         return deleteAttractionTags(name) && deleteFromAttractionTable(name);
 
     }
 
-    //Changes
 
     private boolean deleteAttractionTags(String name) {
         int rows = 0;

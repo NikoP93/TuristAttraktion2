@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.HTML;
 import java.util.List;
 
 
@@ -41,36 +42,36 @@ public class TouristController {
 
 @GetMapping("/add")
     public String addAttraction(Model model){
-    model.addAttribute("touristAttraction", new TouristAttraction());
+    model.addAttribute("touristAttraction", new TouristAttractionDTO());
     List<String> cityList = touristServices.getCities();
     model.addAttribute("cityList",cityList);
-    List<String> tagsList = touristServices.getTags();
+    List<TagDTO> tagsList = touristServices.getTags();
     model.addAttribute("tagsList", tagsList);
     return "addTouristAttraction";
 }
 
 @PostMapping("/save")
-    public String saveAttraction(@ModelAttribute TouristAttraction touristAttraction){
+    public String saveAttraction(@ModelAttribute TouristAttractionDTO touristAttraction){
     touristServices.addTouristAttraction(touristAttraction);
     return "redirect:/attractions";
 }
 
-@GetMapping("/{name}/edit")
-    public String editAttraction(@PathVariable String name, Model model){
-    TouristAttraction editedAttraction = touristServices.getTouristAttraction1(name);
-    model.addAttribute("editedTouristAttraction", editedAttraction);
-    List<String> cityList = touristServices.getCities();
-    model.addAttribute("cityList",cityList);
-    List<String> tagsList = touristServices.getTags();
-    model.addAttribute("tagsList",tagsList);
-    return "editTouristAttraction";
-}
-
-@PostMapping("/update")
-    public String updateAttraction(@ModelAttribute TouristAttraction touristAttraction){
-    touristServices.updateTouristAttraction(touristAttraction);
-    return "redirect:/attractions";
-}
+//@GetMapping("/{name}/edit")
+//    public String editAttraction(@PathVariable String name, Model model){
+//    TouristAttraction editedAttraction = touristServices.getTouristAttraction(name);
+//    model.addAttribute("editedTouristAttraction", editedAttraction);
+//    List<String> cityList = touristServices.getCities();
+//    model.addAttribute("cityList",cityList);
+//    List<TagDTO> tagsList = touristServices.getTags();
+//    model.addAttribute("tagsList",tagsList);
+//    return "editTouristAttraction";
+//}
+//
+//@PostMapping("/update")
+//    public String updateAttraction(@ModelAttribute TouristAttraction touristAttraction){
+//    touristServices.updateTouristAttraction(touristAttraction);
+//    return "redirect:/attractions";
+//}
 
 @GetMapping("{name}/delete")
     public String deleteAttraction(@PathVariable String name){

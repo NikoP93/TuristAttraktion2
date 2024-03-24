@@ -44,26 +44,34 @@ public class TouristServices {
         return dbRepository.getTagListDTO(name);
     }
 
+    public List<TagDTO> getTags(){
+        return dbRepository.getTags();
+    }
+
+    public List<String> getCities(){
+        return dbRepository.getCities();
+    }
+
 
 
     public boolean deleteAttraction(String name){
        return dbRepository.deleteAttraction(name);
     }
 
-    public TouristAttraction getTouristAttraction1(String name){
-        return repository.getTouristAttraction(name);
-    }
+//    public TouristAttraction getTouristAttraction1(String name){
+//        return repository.getTouristAttraction(name);
+//    }
+//
+//    public List<String> getCities(){
+//        return repository.getCities();
+//    }
 
-    public List<String> getCities(){
-        return repository.getCities();
-    }
+//    public List<String> getTags(){
+//        return repository.getTags();
+//    }
 
-    public List<String> getTags(){
-        return repository.getTags();
-    }
-
-    public TouristAttraction addTouristAttraction(TouristAttraction touristAttraction) {
-        return repository.addTouristAttraction(touristAttraction);
+    public TouristAttractionDTO addTouristAttraction(TouristAttractionDTO touristAttraction) {
+        return dbRepository.addTouristAttraction(touristAttraction);
 
     }
 
